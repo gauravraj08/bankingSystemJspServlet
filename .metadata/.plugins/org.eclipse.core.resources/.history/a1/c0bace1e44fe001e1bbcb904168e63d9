@@ -1,0 +1,64 @@
+package com.first.bms;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
+public class MiniBean {
+    private String pin;
+    private String transactions;
+    private String balance;
+
+    public MiniBean(String pin) {
+        this.pin = pin;
+        fetchTransactionsAndBalance(pin);
+    }
+
+    private void fetchTransactionsAndBalance(String pin) {
+        PreparedStatement statement = null;
+        try {
+            StringBuilder transactionsBuilder = new StringBuilder();
+            int balance = 0;
+            int serialNumber = 1;
+            Connection c = DatabaseConnection.getConnection();
+            String query = "select * from bank where pin = ?";
+            statement = c.prepareStatement(query);
+            statement.setString(1, pin);
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                String transaction = serialNumber++ + "\t" +
+                                      resultSet.getString("date") + "\t" +
+                                      resultSet.getString("type") + "\t" +
+                                      resultSet.getString("amount") + "\n";
+                transactionsBuilder.append(formatTransaction(transaction));
+
+                if (resultSet.getString("type").equals("Deposit")) {
+                    balance += Integer.parseInt(resultSet.getString("amount"));
+                } else {
+                    balance -= Integer.parseInt(resultSet.getString("amount"));
+                }
+            }
+
+            this.transactions = transactionsBuilder.toString();
+            this.balance = "Your Total Balance is Rs " + balance;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String formatTransaction(String transaction) {
+        String[] parts = transaction.split("\t");
+        String formattedTransaction = String.format("%-8s%-12s%-12s%-10s\n", "S.No", "Date", "Type", "Amount");
+        formattedTransaction += String.format("%-8s%-12s%-12s%-10s\n", parts[0] + ".", parts[1], parts[2], parts[3]);
+        return formattedTransaction;
+    }
+
+    public String getTransactions() {
+        return transactions;
+    }
+
+    public String getBalance() {
+        return balance;
+    }
+}

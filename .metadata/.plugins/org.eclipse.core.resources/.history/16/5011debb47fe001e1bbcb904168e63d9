@@ -1,0 +1,74 @@
+package com.first.bms;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.List;
+import java.util.StringTokenizer;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet("/MiniStatementServlet")
+public class MiniStatementServlet extends HttpServlet {
+    private static final long serialVersionUID = 1L;
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    	String pin =  (String) request.getSession().getAttribute("pin");
+        MiniBean miniBean = new MiniBean(pin);
+        String transactions = miniBean.getTransactions();
+        String balance = miniBean.getBalance();
+        createPDF(transactions, pin, balance, response);
+    }
+
+    static void createPDF(String transactions, String cardNumber, String balance, HttpServletResponse response) {
+        Document document = new Document();
+        try {
+            response.setContentType("application/pdf");
+            PdfWriter.getInstance(document, response.getOutputStream());
+            document.open();
+
+            // Add bank name to PDF
+            Paragraph bankName = new Paragraph("Baka Banker's", new Font(Font.FontFamily.HELVETICA, 18, Font.BOLD));
+            bankName.setAlignment(Element.ALIGN_CENTER);
+            document.add(bankName);
+
+            document.add(new Paragraph("Mini Statement"));
+            document.add(new Paragraph("Account Number: " + cardNumber));
+            document.add(new Paragraph(""));
+
+            PdfPTable table = new PdfPTable(4);
+            table.setWidthPercentage(100);
+            table.addCell("Serial No");
+            table.addCell("Date");
+            table.addCell("Type");
+            table.addCell("Amount");
+
+            // Tokenize the transactions and add them to the table
+            StringTokenizer tokenizer = new StringTokenizer(transactions, ",");
+            while (tokenizer.hasMoreTokens()) {
+                String transaction = tokenizer.nextToken();
+                StringTokenizer innerTokenizer = new StringTokenizer(transaction, "|");
+                while (innerTokenizer.hasMoreTokens()) {
+                    table.addCell(innerTokenizer.nextToken());
+                }
+            }
+
+            document.add(table);
+            document.add(new Paragraph(""));
+            document.add(new Paragraph(balance));
+
+            document.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}

@@ -1,0 +1,31 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="com.first.bms.MiniBean" %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini Statement - Bank Management System</title>
+    <!-- Your CSS and other head elements -->
+</head>
+<body>
+    <div class="container">
+        <h2>Mini Statement - Bank Management System</h2>
+        <% 
+            MiniBean miniBean = (MiniBean)request.getAttribute("miniBean"); // Get MiniBean object from request attribute
+            String transactions = miniBean.getTransactions();
+            String balance = miniBean.getBalance();
+        %>
+        <div id="transactions">
+            <%= transactions %>
+        </div>
+        <div id="balance">
+            <%= balance %>
+        </div>
+        <form action="MiniStatementServlet" method="post">
+            <input type="hidden" name="pin" value="<%= miniBean.getPin() %>"/> <!-- Accessing pin property -->
+            <button type="submit">Download PDF</button>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer List</title>
+</head>
+<body>
+    <h1>Customer List</h1>
+    <div id="customerList"></div>
+
+    <script>
+        // Make AJAX request to fetch data from servlet
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', 'displayDataServlet', true);
+        xhr.onload = function() {
+            if (xhr.status >= 200 && xhr.status < 300) {
+                // Parse JSON response
+                var customerList = JSON.parse(xhr.responseText);
+
+                // Display data on the webpage
+                var customerListDiv = document.getElementById('customerList');
+                if (customerList.length > 0) {
+                    var html = '<ul>';
+                    customerList.forEach(function(customer) {
+                        html += '<li>' + customer + '</li>';
+                    });
+                    html += '</ul>';
+                    customerListDiv.innerHTML = html;
+                } else {
+                    customerListDiv.innerHTML = '<p>No customers found.</p>';
+                }
+            } else {
+                console.error('Failed to fetch data from the servlet.');
+            }
+        };
+        xhr.send();
+    </script>
+</body>
+</html>

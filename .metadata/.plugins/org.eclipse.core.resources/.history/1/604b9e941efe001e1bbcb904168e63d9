@@ -1,0 +1,54 @@
+package com.first.bms;
+
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@SuppressWarnings("serial")
+@WebServlet("/MainClassServlet")
+public class MainClassServlet extends HttpServlet {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String action = request.getParameter("action");
+
+        switch (action) {
+            case "DEPOSIT":
+                response.sendRedirect("deposit.jsp");
+                break;
+            case "WITHDRAWL":
+                response.sendRedirect("Withdrawl.jsp");
+                break;
+            case "FASTCASH":
+                response.sendRedirect("FastCash.jsp");
+                break;
+            case "MINISTATEMENT":
+                response.sendRedirect("MiniStatement.jsp");
+                break;
+            case "PINCHANGE":
+                response.sendRedirect("pin.jsp");
+                break;
+            case "BALANCEENQUIRY":
+                response.sendRedirect("BalanceEnquiry.jsp");
+                break;
+            case "EXIT":
+            	request.getSession().invalidate();
+                
+                break;
+            case "CLOSEACCOUNT":
+                response.sendRedirect("CloseAccount.jsp");
+                break;
+            default:
+                response.sendRedirect("main_Class.jsp");
+                break;
+        }
+    }
+    
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // You can handle GET requests here
+        // For example, you might want to display the main menu page
+    	response.sendRedirect("index.jsp");
+    }
+}

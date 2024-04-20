@@ -1,0 +1,65 @@
+body {
+    background-color: #d7fcfc;
+}
+
+label {
+    font-family: 'Raleway', sans-serif;
+    font-weight: bold;
+}
+
+.span{
+	font-size:10px;
+}
+
+#form-container {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    width: 70%;
+    margin: auto;
+    margin-top: 50px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.image-container {
+    text-align: center;
+}
+
+#account-details-heading {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.radio-button-container {
+    margin-top: 20px;
+}
+
+.checkbox-container {
+    margin-top: 20px;
+}
+
+.checkbox-container input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+.checkbox-container label {
+    margin-right: 20px;
+}
+
+.submit-container {
+    text-align: center;
+    margin-top: 30px;
+}
+
+#submit-btn {
+    background-color: #000;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#submit-btn:hover {
+    background-color: #333;
+}

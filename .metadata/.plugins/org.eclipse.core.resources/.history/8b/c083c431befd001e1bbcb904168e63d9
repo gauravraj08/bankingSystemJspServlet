@@ -1,0 +1,53 @@
+package com.first.bms;
+
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet("/displayDataServlet")
+public class DisplayDataServlet extends HttpServlet {
+    private static final long serialVersionUID = 1L;
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+//        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+
+        try {
+            // Connect to your database (adjust connection details as needed)
+        	Connection conn = DatabaseConnection.getConnection();
+            // Retrieve data from the database
+            String query = "SELECT * FROM signup";
+            stmt = conn.prepareStatement(query);
+            rs = stmt.executeQuery();
+
+            List<String> customerList = new ArrayList<>();
+            while (rs.next()) {
+                // Construct customer information string
+                String customerInfo = "Name: " + rs.getString("name") + ", DOB: " + rs.getString("DOB") + ", Email: " + rs.getString("email");
+                customerList.add(customerInfo);
+            }
+
+            // Forward the data to the JSP page for display
+            request.setAttribute("customerList", customerList);
+            request.getRequestDispatcher("displayData.jsp").forward(request, response);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            // Close connections
+            try { if (rs != null) rs.close(); } catch (Exception e) { /* ignored */ }
+            try { if (stmt != null) stmt.close(); } catch (Exception e) { /* ignored */ }
+//            try { if (conn != null) conn.close(); } catch (Exception e) { /* ignored */ }
+        }
+    }
+}

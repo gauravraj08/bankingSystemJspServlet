@@ -1,0 +1,73 @@
+package com.first.bms;
+
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Date;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet("/DepositServlet")
+public class DepositServlet extends HttpServlet {
+    private static final long serialVersionUID = 1L;
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String pin = (String) request.getSession().getAttribute("pin");
+        String amount = request.getParameter("amount");
+
+        if (pin == null || amount == null || amount.isEmpty()) {
+            // Handle invalid input
+            response.sendRedirect("deposit.jsp");
+            return;
+        }
+
+        try {
+            Date date = new Date();
+            Connection conn = DatabaseConnection.getConnection();
+            PreparedStatement pstmt = conn.prepareStatement("INSERT INTO bank VALUES (?, ?, 'Deposit', ?)");
+            pstmt.setString(1, pin);
+            pstmt.setDate(2, new java.sql.Date(date.getTime())); // Assuming your database column is of type DATE
+            pstmt.setString(3, amount);
+            pstmt.executeUpdate();
+            pstmt.close();
+            conn.close();
+
+            // Redirect to appropriate page based on transaction history
+            if (hasNoTransactionHistory(pin)) {
+                response.sendRedirect("login.jsp");
+            } else {
+                response.sendRedirect("main_class.jsp");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle database error
+            response.sendRedirect("deposit.jsp");
+        }
+    }
+
+    private boolean hasNoTransactionHistory(String pin) {
+        try {
+            Connection c = DatabaseConnection.getConnection();
+           
+            PreparedStatement pstmt = c.prepareStatement("SELECT COUNT(*) AS count FROM bank WHERE pin = ?");
+            pstmt.setString(1, pin);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                int count = rs.getInt("count");
+                return count == 0;
+            }
+            rs.close();
+            pstmt.close();
+            c.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+}

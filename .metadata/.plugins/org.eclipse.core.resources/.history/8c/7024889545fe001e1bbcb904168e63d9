@@ -1,0 +1,48 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="com.first.bms.MiniBean" %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini Statement - Bank Management System</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h2>Mini Statement - Bank Management System</h2>
+    <% 
+        MiniBean miniBean = (MiniBean)request.getAttribute("MiniBean");
+        String transactions = miniBean.getTransactions();
+        String balance = miniBean.getBalance();
+    %>
+    <table>
+        <tr>
+            <th>S.No</th>
+            <th>Date</th>
+            <th>Type</th>
+            <th>Amount</th>
+        </tr>
+        <%= transactions %>
+    </table>
+    <p><%= balance %></p>
+    <form action="MiniStatementServlet" method="post">
+        <input type="hidden" name="pin" value="<%= request.getParameter("pin") %>"/>
+        <button type="submit">Download PDF</button>
+    </form>
+</body>
+</html>

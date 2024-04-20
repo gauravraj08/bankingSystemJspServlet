@@ -1,0 +1,50 @@
+package com.first.bms;
+
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet("/CloseAccountServlet")
+public class CloseAccountServlet extends HttpServlet {
+    private static final long serialVersionUID = 1L;
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String pin = request.getParameter("pin");
+
+        // Perform account closure logic here
+        int balance = 0;
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        try {
+        	conn = DatabaseConnection.getConnection();
+            String query = "SELECT * FROM bank WHERE pin = '" + pin + "'";
+            pstmt = conn.prepareStatement(query);
+            ResultSet resultSet = pstmt.executeQuery();
+            while (resultSet.next()) {
+                if (resultSet.getString("type").equals("Deposit")) {
+                    balance += Integer.parseInt(resultSet.getString("amount"));
+                } else {
+                    balance -= Integer.parseInt(resultSet.getString("amount"));
+                }
+            }
+
+            if (balance == 0) {
+                c.statement.executeUpdate("DELETE FROM login WHERE pin = '" + pin + "'");
+                c.statement.executeUpdate("DELETE FROM bank WHERE pin = '" + pin + "'");
+                response.sendRedirect("accountClosed.jsp");
+            } else {
+                response.sendRedirect("cannotClose.jsp");
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            response.sendRedirect("error.jsp");
+        }
+    }
+}

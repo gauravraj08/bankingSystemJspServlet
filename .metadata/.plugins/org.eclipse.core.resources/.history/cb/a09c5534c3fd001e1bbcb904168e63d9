@@ -1,0 +1,26 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.util.List" %> <!-- Add this import statement -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Customer List</title>
+</head>
+<body>
+    <h1>Customer List</h1>
+    <% 
+        List<String> customerList = (List<String>) request.getAttribute("customerList");
+        if (customerList != null && !customerList.isEmpty()) {
+            for (String customerInfo : customerList) {
+    %>
+                <p><%= customerInfo %></p>
+    <%
+            }
+        } else {
+    %>
+            <p>No customers found.</p>
+    <%
+        }
+    %>
+</body>
+</html>

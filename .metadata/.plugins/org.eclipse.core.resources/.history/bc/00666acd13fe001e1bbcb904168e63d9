@@ -1,0 +1,26 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main Menu - Bank Management System</title>
+    <style>
+        /* CSS styles for the main menu */
+        /* Define your styles here */
+    </style>
+</head>
+<body>
+    <h2>Please Select Your Transaction</h2>
+    <form action="MainClassServlet" method="post">
+        <button type="submit" name="action" value="DEPOSIT">Deposit</button>
+        <button type="submit" name="action" value="WITHDRAWL">Cash Withdrawl</button>
+        <button type="submit" name="action" value="FASTCASH">Fast Cash</button>
+        <button type="submit" name="action" value="MINISTATEMENT">Mini Statement</button>
+        <button type="submit" name="action" value="PINCHANGE">PIN Change</button>
+        <button type="submit" name="action" value="BALANCEENQUIRY">Balance Enquiry</button>
+        <button type="submit" name="action" value="EXIT">Exit</button>
+        <button type="submit" name="action" value="CLOSEACCOUNT">Close Account</button>
+    </form>
+</body>
+</html>

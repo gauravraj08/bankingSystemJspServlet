@@ -1,0 +1,27 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Bank Management System</title>
+    <style>
+        /* CSS styles for the login page */
+        /* Define your styles here */
+    </style>
+</head>
+<body>
+    <h2>Welcome to ATM</h2>
+    <form action="LoginServlet" method="post">
+        <label for="cardno">Account No:</label>
+        <input type="text" id="cardno" name="cardno" required><br><br>
+        
+        <label for="pin">PIN:</label>
+        <input type="password" id="pin" name="pin" required><br><br>
+        
+        <button type="submit">Sign In</button>
+        <button type="reset">Clear</button>
+    </form>
+    <a href="AdminPage.jsp">Sign Up</a>
+</body>
+</html>

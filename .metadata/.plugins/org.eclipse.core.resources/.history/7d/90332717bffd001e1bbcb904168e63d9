@@ -1,0 +1,26 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Customer List</title>
+</head>
+<body>
+    <h1>Customer List</h1>
+    <%
+        // Fetching data from the servlet
+        java.util.List<String> customerList = (java.util.List<String>) request.getAttribute("customerList");
+        if (customerList != null) {
+            for (String customerInfo : customerList) {
+    %>
+                <p><%= customerInfo %></p>
+    <%
+            }
+        } else {
+    %>
+            <p>No customers found.</p>
+    <%
+        }
+    %>
+</body>
+</html>
