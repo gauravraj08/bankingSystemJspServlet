@@ -36,7 +36,7 @@ public class LoginServlet extends HttpServlet {
             if (resultSet.next()) {
                 if (hasNoTransactionHistory(pin)) {
                     request.getSession().setAttribute("pin", pin);
-                    response.sendRedirect("main_class.jsp");
+                    response.sendRedirect("pin.jsp");
                 } else {
                     request.getSession().setAttribute("pin", pin);
                     response.sendRedirect("main_class.jsp");

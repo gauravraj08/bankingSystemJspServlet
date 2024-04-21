@@ -55,7 +55,7 @@
             margin-bottom: 20px;
         }
 
-        button {
+        .btn {
             width: 100%;
             padding: 10px;
             border: none;
@@ -65,9 +65,10 @@
             font-size: 16px;
             cursor: pointer;
             transition: background-color 0.3s ease;
+            margin-bottom: 10px;
         }
 
-        button:hover {
+        .btn:hover {
             background-color: #4D9F9F;
         }
     </style>
@@ -117,7 +118,8 @@
         </div>
         <form action="MiniStatementServlet" method="post">
             <input type="hidden" name="pin" value="<%= request.getParameter("pin") %>"/>
-            <button type="submit">Download PDF</button>
+            <button class="btn" type="submit" name="action" value="web">Check Statement</button>
+            <button class="btn" type="submit" name="action" value="pdf">Download PDF</button>
         </form>
     </div>
 </body>

@@ -1,13 +1,16 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f0f0f0; /* Background color */
     margin: 0;
     padding: 0;
+    width: 100%;
+    min-height: 100vh;
+    background: linear-gradient(135deg,#153677,#4e085f);
+    
 }
 
 .container {
     text-align: center;
-    margin-top: 100px; /* Adjust as needed */
+    margin-top: 100px;
 }
 
 h2 {
